@@ -25,57 +25,56 @@
 #include <stdio.h>
 #include <string.h>
 
-void generateKey(const char* str, const char* key, char* newKey) {
-    int strLen = strlen(str);
+// Function to perform Vigenere encryption
+void vigenereEncrypt(char *text, const char *key) {
+    int textLen = strlen(text);
     int keyLen = strlen(key);
-    int i, j;
 
-    for(i = 0; i < strLen; i++) {
-        newKey[i] = key[i % keyLen];
+    for (int i = 0; i < textLen; i++) {
+        char c = text[i];
+        if (c >= 'A' && c <= 'Z') {
+            // Encrypt uppercase letters
+            text[i] = ((c - 'A' + key[i % keyLen] - 'A') % 26) + 'A';
+        } else if (c >= 'a' && c <= 'z') {
+            // Encrypt lowercase letters
+            text[i] = ((c - 'a' + key[i % keyLen] - 'A') % 26) + 'a';
+        }
     }
-    newKey[i] = '\0';  
 }
 
-void cipherText(const char* str, const char* key, char* cipher_text) {
-    int strLen = strlen(str);
-    for(int i = 0; i < strLen; i++) {
-        char x = (str[i] + key[i]) % 26;
-        x += 'A';
-        cipher_text[i] = x;
-    }
-    cipher_text[strLen] = '\0';  
-}
+// Function to perform Vigenere decryption
+void vigenereDecrypt(char *text, const char *key) {
+    int textLen = strlen(text);
+    int keyLen = strlen(key);
 
-void originalText(const char* cipher_text, const char* key, char* orig_text) {
-    int strLen = strlen(cipher_text);
-    for(int i = 0; i < strLen; i++) {
-        char x = (cipher_text[i] - key[i] + 26) % 26;
-        x += 'A';
-        orig_text[i] = x;
+    for (int i = 0; i < textLen; i++) {
+        char c = text[i];
+        if (c >= 'A' && c <= 'Z') {
+            // Decrypt uppercase letters
+            text[i] = ((c - 'A' - (key[i % keyLen] - 'A') + 26) % 26) + 'A';
+        } else if (c >= 'a' && c <= 'z') {
+            // Decrypt lowercase letters
+            text[i] = ((c - 'a' - (key[i % keyLen] - 'A') + 26) % 26) + 'a';
+        }
     }
-    orig_text[strLen] = '\0';  
 }
 
 int main() {
-    char str[] = "GOPIKA";
-    char keyword[] = "HELLO";
-    char key[100];
-    char cipher_text[100];
-    char orig_text[100];
+    const char *key = "KEY";  // Replace with your desired key
+    char message[] = "alliswell";  // Replace with your message
 
-    generateKey(str, keyword, key);
-    cipherText(str, key, cipher_text);
-    originalText(cipher_text, key, orig_text);
+    // Encrypt the message
+    vigenereEncrypt(message, key);
+    printf("Encrypted Message: %s\n", message);
 
-    printf("Ciphertext : %s\n", cipher_text);
-    printf("Original/Decrypted Text : %s\n", orig_text);
+    // Decrypt the message back to the original
+    vigenereDecrypt(message, key);
+    printf("Decrypted Message: %s\n", message);
 
     return 0;
 }
 ```
 ## OUTPUT:
-
-![Screenshot 2024-09-02 135412](https://github.com/user-attachments/assets/7f3b6e61-2f35-462b-bd58-d1b943dd0521)
-
+![image](https://github.com/user-attachments/assets/42c62b17-9cd9-4246-bb14-e50f95fa52d8)
 ## RESULT:
   Thus the Vigenere Cipher substitution technique had been implemented successfully.
